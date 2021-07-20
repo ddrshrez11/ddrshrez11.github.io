@@ -1,30 +1,86 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Yunip Shrestha</title>
+		<title>Yunip Lal Shrestha</title>
 		<!-- link to main stylesheet -->
-		<link rel="stylesheet" type="text/css" href="/css/main.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<script src="https://use.fontawesome.com/e8f8802719.js"></script>
 	</head>
 	<body>
-		<nav>
-    		<ul>
-        		<li><a href="/">Home</a></li>
-	        	<li><a href="/about">About</a></li>
-        		<li><a href="/cv">CV</a></li>
-        		<li><a href="/blog">Blog</a></li>
-    		</ul>
-		</nav>
-		<div class="container">
-    		<div class="blurb">
-        		<h1>Hi there, I'm Yunip Shrestha!</h1>
-				<p>I'm best known as the horrible cop from <em>A Touch of Evil</em> Don't trust me. <a href="/about">Read more about my life...</a></p>
-    		</div><!-- /.blurb -->
-		</div><!-- /.container -->
-		<footer>
+		<div class="main">
+			<div class="sidebar">
+				<div>
+					<img id='prof_img'  height= 200 width=200>
+					<h2 id='name'>Yunip Shrestha</h2>
+					<h4 id='username'>ddrshrez11</h4>
+					<p>
+						<ul>
+							<li ><i class="fa fa-book" aria-hidden="true"></i>Public Repos: <span id='pub_repos'></span></li>
+							<li ><i class="fa fa-users" aria-hidden="true"></i>Followers: <span id="followers"></span> </li>
+							<li ><i class="fa fa-user-secret" aria-hidden="true"></i>Following: <span id="following"></span> </li>
+						</ul>	
+					</p>
+					<a  id='url'> <i class="fa fa-github" aria-hidden="true"></i> github.com/ddrshrez11	</a>
+				</div>
+			</div>
+			<div class="content">
+				<h3>Repositories</h3>
+				<table id='repos'>
+					<tr>
+						<th>SN</th>
+						<th>Repository Name</th>
+						<th style="width: 35%;">Description</th>
+						<th style="width: 25%;">URL</th>
+						<th>Language</th>
+					</tr>
+
+				</table>
+			</div>
+
+		</div>
+<!-- <a href=data[i]['html_url']>data[i]['name']</a> -->
+
+		<!-- <footer>
     		<ul>
         		<li><a href="mailto:yunipshrestha@gmail.com">email</a></li>
         		<li><a href="https://github.com/ddrshrez11">github.com/ddrshrez11</a></li>
 			</ul>
-		</footer>
+		</footer> -->
 	</body>
+
+	<script>
+		fetch("https://api.github.com/users/ddrshrez11")
+			.then(response=>response.json())
+			.then(function(data){
+				//console.log(data)
+
+				document.getElementById('prof_img').src = data['avatar_url']
+				document.getElementById('name').textContent= data['name']
+				document.getElementById('username').textContent = data['login']
+				document.getElementById('pub_repos').textContent = data['public_repos']
+				document.getElementById('followers').textContent = data['followers']
+				document.getElementById('following').textContent = data['following']
+				document.getElementById('url').href = data['html_url']
+			})
+
+		fetch("https://api.github.com/users/ddrshrez11/repos")
+			.then(response=>response.json())
+			.then(function(data){
+				console.log(data)
+
+				var table = document.getElementById('repos');
+				var column_count = 5;
+
+				for (var i=0; i<data.length; i++){
+					var row = table.insertRow(-1);
+					row.insertCell(-1).innerHTML= i+1;
+					row.insertCell(-1).innerHTML= data[i]['name'];
+					row.insertCell(-1).innerHTML= data[i]['description'];
+					row.insertCell(-1).innerHTML= `<a href=${data[i]['html_url']}>${data[i]['name']}</a>`;//data[i]['html_url'];
+					row.insertCell(-1).innerHTML= data[i]['language'];					
+				}
+			})
+		
+	</script>
+	
 </html>
